@@ -1,26 +1,16 @@
 package insurance.vehicle;
 
+import insurance.Insurance;
+import insurance.coverage.Coverage;
 import model.User;
 import model.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleInsurance {
-
-    private User owner;
+public class VehicleInsurance extends Insurance {
 
     private Vehicle vehicle;
-
-    private List<VehicleCoverage> vehicleCoverages = new ArrayList<>();
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -30,29 +20,26 @@ public class VehicleInsurance {
         this.vehicle = vehicle;
     }
 
-    public List<VehicleCoverage> getVehicleCoverages() {
-        return vehicleCoverages;
+    @Override
+    public Object get() {
+        return vehicle;
     }
 
-    public void setVehicleCoverages(List<VehicleCoverage> vehicleCoverages) {
-        this.vehicleCoverages = vehicleCoverages;
+    @Override
+    public void set(Object o) {
+        if (o instanceof Vehicle)
+            vehicle = (Vehicle) o;
+        else vehicle = null;
     }
 
-    public void addCoverage(VehicleCoverage coverage) {
-        vehicleCoverages.add(coverage);
-    }
-
-    public List<VehicleCoverage> getCoverages() {
-        return vehicleCoverages;
-    }
-
-    public double calculatePrice() {
+    @Override
+    public double calculateAmount(int... args) {
         double monthly = 0.0;
 
-        for (VehicleCoverage vehicleCoverage : vehicleCoverages) {
+        for (Coverage vehicleCoverage : coverages) {
             monthly += vehicleCoverage.getPrice();
 
-            if (owner.getAge() < 35) {
+            if (vehicle.getOwner().getAge() < 35) {
                 monthly = monthly + (monthly * 0.02);
             }
         }

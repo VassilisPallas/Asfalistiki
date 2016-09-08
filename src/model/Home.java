@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 public class Home {
     private String address;
     private String addressNumber;
     private int floor;
     private double sqrm;
+    private List<User> inhabitants;
 
     public Home() {
     }
@@ -47,4 +50,13 @@ public class Home {
     public void setSqrm(double sqrm) {
         this.sqrm = sqrm;
     }
+
+    public List<User> getInhabitants() {
+        return inhabitants;
+    }
+
+    public void setInhabitants(List<User> inhabitant) {
+        this.inhabitants = inhabitant;
+    }
+
 }

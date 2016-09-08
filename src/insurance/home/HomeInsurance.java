@@ -1,35 +1,15 @@
 package insurance.home;
 
+import insurance.Insurance;
+import insurance.coverage.Coverage;
 import model.Home;
 import model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeInsurance {
+public class HomeInsurance extends Insurance{
     private Home home;
-    private List<User> inhabitants;
-    private List<HomeCoverage> homeCoverages = new ArrayList<>();
-
-    public List<User> getInhabitants() {
-        return inhabitants;
-    }
-
-    public void setInhabitants(List<User> inhabitant) {
-        this.inhabitants = inhabitant;
-    }
-
-    public List<HomeCoverage> getHomeCoverages() {
-        return homeCoverages;
-    }
-
-    public void setHomeCoverages(List<HomeCoverage> homeCoverages) {
-        this.homeCoverages = homeCoverages;
-    }
-
-    public void addHomeCoverages(HomeCoverage homeCoverage) {
-        this.homeCoverages.add(homeCoverage);
-    }
 
     public Home getHome() {
         return home;
@@ -39,10 +19,23 @@ public class HomeInsurance {
         this.home = home;
     }
 
-    public double calculatePrice(int members) {
+    @Override
+    public Object get() {
+        return home;
+    }
+
+    @Override
+    public void set(Object o) {
+        if (o instanceof Home)
+            home = (Home) o;
+        else home = null;
+    }
+
+    @Override
+    public double calculateAmount(int... args) {
         double monthly = 0.0;
 
-        for (HomeCoverage homeCoverage : homeCoverages) {
+        for (Coverage homeCoverage : coverages) {
             monthly += homeCoverage.getPrice();
 
             if (home.getSqrm() > 100) {
@@ -50,7 +43,7 @@ public class HomeInsurance {
             }
         }
 
-        return monthly * 12;
+        return (monthly * 12) * args[0];
     }
 }
 

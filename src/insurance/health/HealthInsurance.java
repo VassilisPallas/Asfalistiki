@@ -1,45 +1,38 @@
 package insurance.health;
 
+import insurance.Insurance;
+import insurance.coverage.Coverage;
 import model.User;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
-public class HealthInsurance {
+public class HealthInsurance extends Insurance {
 
     private List<User> members;
 
-    private List<HealthCoverage> healthCoverages = new ArrayList<>();
 
-
-    public List<HealthCoverage> getHealthInsurances() {
-        return healthCoverages;
-    }
-
-    public void setHealthInsurances(List<HealthCoverage> healthCoverages) {
-        this.healthCoverages = healthCoverages;
-    }
-
-    public void addHealthInsurances(HealthCoverage healthCoverages) {
-        this.healthCoverages.add(healthCoverages);
-    }
-
-    public List<User> getMembers() {
+    @Override
+    public Object get() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
-        this.members = members;
+    @Override
+    public void set(Object o) {
+        if (o instanceof List<?>)
+            members = (List<User>) o;
+        else members = null;
     }
 
-    public double calculatePrice(int members) {
+    @Override
+    public double calculateAmount(int... args) {
         double total = 0.0;
 
-        for (HealthCoverage healthInsurances : healthCoverages) {
+        for (Coverage healthInsurances : coverages) {
             total += healthInsurances.getPrice();
         }
 
-        return total * members;
+        return (total * 12) * args[0];
     }
-
 }

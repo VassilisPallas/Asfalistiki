@@ -13,13 +13,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("mainScreen.fxml"));
         primaryStage.setTitle("Ασφαλιστική - Είσοδος");
-        primaryStage.setScene(new Scene(root, 600, 375));
+        Scene scene = new Scene(root, 600, 375);
+        scene.getStylesheets().add("resources/stylesheets/main.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
-        // Application.launch(Main.class, (String[]) null);
         launch(args);
     }
 }

@@ -1,17 +1,16 @@
 package main_screen;
 
+import helpers.AlertBoxHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.stage.Modality;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.User;
+import new_contract_screen.NewContractController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +18,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+
     @FXML
     private Button loginBtn;
 
@@ -40,11 +40,19 @@ public class MainController implements Initializable {
     @FXML
     private Label ageError;
 
+    @FXML
+    private StackPane root;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         loginBtn.setOnAction((event) -> {
             if (validate()) {
-                User user = new User(firstName.getText().trim(), lastName.getText().trim(), Calendar.getInstance().get(Calendar.YEAR) - age.getValue().getYear());
+                try {
+                    openNewContractScreen(new User(firstName.getText().trim(), lastName.getText().trim(), Calendar.getInstance().get(Calendar.YEAR) - age.getValue().getYear()));
+                } catch (IOException | IllegalStateException e) {
+                    AlertBoxHelper.display("Error", "An error has occurred: Internal Error");
+                }
             }
         });
     }
@@ -76,5 +84,13 @@ public class MainController implements Initializable {
     }
 
     private void openNewContractScreen(User user) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/new_contract_screen/newContractScreen.fxml"));
+        Parent sceneMain = loader.load();
+        NewContractController controller = loader.getController();
+        controller.getUser(user);
+
+        Stage stage = (Stage) loginBtn.getScene().getWindow();
+        stage.setTitle("Δημιουργία νέου συμβολαίου");
+        stage.setScene(new Scene(sceneMain, 600, 375));
     }
 }

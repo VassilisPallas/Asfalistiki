@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="new_contract_screen.NewContractController">
+
+    <GridPane fx:id="grid" alignment="CENTER" hgap="10" minHeight="-Infinity" prefHeight="400.0" prefWidth="600.0" snapToPixel="false" vgap="10">
+
+        <VBox alignment="CENTER" spacing="1.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="171.0" text="Επιλέξτε είδος ασφάλισης" />
+
+            <ComboBox fx:id="insuranceType" promptText="Είδος ασφάλισης">
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+            </ComboBox>
+        </VBox>
+
+        <VBox fx:id="vehicleTypeBox" alignment="CENTER" spacing="1.0" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" text="Επιλέξτε είδος οχήματος">
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </Label>
+
+            <ComboBox fx:id="vehicleType" promptText="Είδος οχήματος" />
+        </VBox>
+
+        <padding>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        </padding>
+
+    </GridPane>
+
+</ScrollPane>

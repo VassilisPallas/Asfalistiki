@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_asfalistiki" default="compile.module.asfalistiki">
+  <dirname property="module.asfalistiki.basedir" file="${ant.file.module_asfalistiki}"/>
+  
+  <property name="module.jdk.home.asfalistiki" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.asfalistiki" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.asfalistiki" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.asfalistiki" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="asfalistiki.output.dir" value="${module.asfalistiki.basedir}/out/production/Asfalistiki"/>
+  <property name="asfalistiki.testoutput.dir" value="${module.asfalistiki.basedir}/out/test/Asfalistiki"/>
+  
+  <path id="asfalistiki.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="asfalistiki.module.production.classpath">
+    <path refid="${module.jdk.classpath.asfalistiki}"/>
+  </path>
+  
+  <path id="asfalistiki.runtime.production.module.classpath">
+    <pathelement location="${asfalistiki.output.dir}"/>
+  </path>
+  
+  <path id="asfalistiki.module.classpath">
+    <path refid="${module.jdk.classpath.asfalistiki}"/>
+    <pathelement location="${asfalistiki.output.dir}"/>
+  </path>
+  
+  <path id="asfalistiki.runtime.module.classpath">
+    <pathelement location="${asfalistiki.testoutput.dir}"/>
+    <pathelement location="${asfalistiki.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.asfalistiki">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.asfalistiki">
+    <patternset refid="excluded.from.module.asfalistiki"/>
+  </patternset>
+  
+  <path id="asfalistiki.module.sourcepath">
+    <dirset dir="${module.asfalistiki.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.asfalistiki" depends="compile.module.asfalistiki.production,compile.module.asfalistiki.tests" description="Compile module Asfalistiki"/>
+  
+  <target name="compile.module.asfalistiki.production" depends="register.custom.compilers" description="Compile module Asfalistiki; production classes">
+    <mkdir dir="${asfalistiki.output.dir}"/>
+    <javac2 destdir="${asfalistiki.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.asfalistiki}/javac">
+      <compilerarg line="${compiler.args.asfalistiki}"/>
+      <bootclasspath refid="asfalistiki.module.bootclasspath"/>
+      <classpath refid="asfalistiki.module.production.classpath"/>
+      <src refid="asfalistiki.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.asfalistiki"/>
+    </javac2>
+    
+    <copy todir="${asfalistiki.output.dir}">
+      <fileset dir="${module.asfalistiki.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.asfalistiki.tests" depends="register.custom.compilers,compile.module.asfalistiki.production" description="compile module Asfalistiki; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.asfalistiki" description="cleanup module">
+    <delete dir="${asfalistiki.output.dir}"/>
+    <delete dir="${asfalistiki.testoutput.dir}"/>
+  </target>
+</project>
