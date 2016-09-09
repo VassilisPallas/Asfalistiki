@@ -52,6 +52,7 @@ public class MainController implements Initializable {
                     openNewContractScreen(new User(firstName.getText().trim(), lastName.getText().trim(), Calendar.getInstance().get(Calendar.YEAR) - age.getValue().getYear()));
                 } catch (IOException | IllegalStateException e) {
                     AlertBoxHelper.display("Error", "An error has occurred: Internal Error");
+                    e.printStackTrace();
                 }
             }
         });
@@ -91,6 +92,8 @@ public class MainController implements Initializable {
 
         Stage stage = (Stage) loginBtn.getScene().getWindow();
         stage.setTitle("Δημιουργία νέου συμβολαίου");
-        stage.setScene(new Scene(sceneMain, 600, 375));
+        Scene scene = new Scene(sceneMain, 600, 375);
+        scene.getStylesheets().add("resources/stylesheets/main.css");
+        stage.setScene(scene);
     }
 }

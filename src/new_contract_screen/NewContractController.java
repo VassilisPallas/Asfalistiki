@@ -79,9 +79,7 @@ public class NewContractController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
         initilalizeComboboxes();
-
     }
 
     private void initilalizeComboboxes() {
