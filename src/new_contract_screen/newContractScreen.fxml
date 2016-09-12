@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="new_contract_screen.NewContractController">
 
     <StackPane id="root">
@@ -37,16 +38,20 @@
                 <ComboBox fx:id="vehicleType" promptText="Είδος οχήματος" />
             </VBox>
 
+
+            <VBox fx:id="addMember" alignment="CENTER" spacing="1.0" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" text="Προσθέστε κάτοικο | Προσθέστε μέλος ασφάλισης">
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Button fx:id="addMemberButton" text="Προσθήκη" />
+            </VBox>
+
             <padding>
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
-            <columnConstraints>
-                <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-            </rowConstraints>
 
         </GridPane>
 

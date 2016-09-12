@@ -33,7 +33,7 @@ public class VehicleInsurance extends Insurance {
     }
 
     @Override
-    public double calculateAmount(int... args) {
+    public double calculateAmount() {
         double monthly = 0.0;
 
         for (Coverage vehicleCoverage : coverages) {

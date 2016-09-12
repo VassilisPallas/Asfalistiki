@@ -1,5 +1,6 @@
 package new_contract_screen;
 
+import helpers.AddUserBoxHelper;
 import helpers.AnimationHelper;
 import insurance.Insurance;
 import insurance.InsuranceType;
@@ -15,10 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -61,6 +59,12 @@ public class NewContractController implements Initializable {
     @FXML
     private GridPane grid;
 
+    @FXML
+    private VBox addMember;
+
+    @FXML
+    private Button addMemberButton;
+
     private ObservableList<InsuranceType> insuranceOptions =
             FXCollections.observableArrayList(
                     HEALTH,
@@ -94,18 +98,23 @@ public class NewContractController implements Initializable {
                             generateCoverages(InsuranceCoverages.healthCoverages());
                             insurance = new HealthInsurance();
                             object = new ArrayList<User>();
+                            addHealthInsuranceMember(user);
+                            addMember.setVisible(true);
                             break;
                         case VEHICLE:
                             AnimationHelper.fadeIn(vehicleTypeBox);
                             generateCoverages(InsuranceCoverages.vehicleCoverages());
                             insurance = new VehicleInsurance();
                             object = new Vehicle();
+                            addMember.setVisible(false);
                             break;
                         case HOME:
                             AnimationHelper.fadeOut(vehicleTypeBox);
                             generateCoverages(InsuranceCoverages.homeCoverages());
                             insurance = new HomeInsurance();
                             object = new Home();
+                            addHomeInhabitant(user);
+                            addMember.setVisible(true);
                             break;
                     }
                 }));
@@ -129,6 +138,18 @@ public class NewContractController implements Initializable {
                     }
                     ((Vehicle) object).setOwner(user);
                 }));
+
+        addMemberButton.setOnAction(event -> {
+            User u = AddUserBoxHelper.addUser("προσθήκη");
+        });
+    }
+
+    private void addHealthInsuranceMember(User usr){
+        ((ArrayList<User>)object).add(usr);
+    }
+
+    private void addHomeInhabitant(User usr){
+        ((Home)object).getInhabitants().add(usr);
     }
 
     private void generateCoverages(List<Coverage> coverages) {

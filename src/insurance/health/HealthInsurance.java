@@ -26,13 +26,13 @@ public class HealthInsurance extends Insurance {
     }
 
     @Override
-    public double calculateAmount(int... args) {
+    public double calculateAmount() {
         double total = 0.0;
 
         for (Coverage healthInsurances : coverages) {
             total += healthInsurances.getPrice();
         }
 
-        return (total * 12) * args[0];
+        return (total * 12) * members.size();
     }
 }

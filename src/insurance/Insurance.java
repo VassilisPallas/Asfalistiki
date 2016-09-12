@@ -25,5 +25,5 @@ public abstract class Insurance {
         coverages.remove(coverage);
     }
 
-    public abstract double calculateAmount(int... args);
+    public abstract double calculateAmount();
 }

@@ -8,7 +8,7 @@ import model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeInsurance extends Insurance{
+public class HomeInsurance extends Insurance {
     private Home home;
 
     public Home getHome() {
@@ -32,7 +32,7 @@ public class HomeInsurance extends Insurance{
     }
 
     @Override
-    public double calculateAmount(int... args) {
+    public double calculateAmount() {
         double monthly = 0.0;
 
         for (Coverage homeCoverage : coverages) {
@@ -43,7 +43,7 @@ public class HomeInsurance extends Insurance{
             }
         }
 
-        return (monthly * 12) * args[0];
+        return (monthly * 12) * home.getInhabitants().size();
     }
 }
 
