@@ -140,16 +140,17 @@ public class NewContractController implements Initializable {
                 }));
 
         addMemberButton.setOnAction(event -> {
-            User u = AddUserBoxHelper.addUser("προσθήκη");
+            User u = new AddUserBoxHelper().addUser("προσθήκη");
+            System.out.print(u.getFirstName());
         });
     }
 
-    private void addHealthInsuranceMember(User usr){
-        ((ArrayList<User>)object).add(usr);
+    private void addHealthInsuranceMember(User usr) {
+        ((ArrayList<User>) object).add(usr);
     }
 
-    private void addHomeInhabitant(User usr){
-        ((Home)object).getInhabitants().add(usr);
+    private void addHomeInhabitant(User usr) {
+        ((Home) object).getInhabitants().add(usr);
     }
 
     private void generateCoverages(List<Coverage> coverages) {
