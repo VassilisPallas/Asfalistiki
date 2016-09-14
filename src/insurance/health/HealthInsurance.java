@@ -12,7 +12,6 @@ public class HealthInsurance extends Insurance {
 
     private List<User> members;
 
-
     @Override
     public Object get() {
         return members;

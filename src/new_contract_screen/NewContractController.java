@@ -1,7 +1,6 @@
 package new_contract_screen;
 
-import helpers.AddUserBoxHelper;
-import helpers.AnimationHelper;
+import helpers.*;
 import insurance.Insurance;
 import insurance.InsuranceType;
 import insurance.coverage.Coverage;
@@ -18,12 +17,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import model.Home;
 import model.User;
 import model.Vehicle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class NewContractController implements Initializable {
     private Insurance insurance;
     private Stack st = new Stack();
     private Object object;
+
+    private ObservableList<User> users = FXCollections.observableArrayList();
 
     @FXML
     private ScrollPane scroll;
@@ -65,6 +70,17 @@ public class NewContractController implements Initializable {
     @FXML
     private Button addMemberButton;
 
+    @FXML
+    private Label addMessage;
+
+    @FXML
+    private Button confirmButton;
+
+    @FXML
+    private Label vehicleTypeError;
+
+    private TableView table = new TableView();
+
     private ObservableList<InsuranceType> insuranceOptions =
             FXCollections.observableArrayList(
                     HEALTH,
@@ -79,11 +95,48 @@ public class NewContractController implements Initializable {
                     FARM_MACHINERY
             );
 
+    private Label insuranceErrorLabel = new Label("Πρέπει να επιλέξετε τουλάχιστον μια ασφάλεια.");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        usersTable();
         initilalizeComboboxes();
+
+        addMemberButton.setOnAction(event -> {
+            User u = new AddUserBoxHelper().addUser(addMessage.getText());
+
+            if (u != null)
+                addUserToList(u);
+        });
+
+        confirmButton.setOnAction(event -> {
+            if (validate()) {
+                try {
+                    openConfirmPage();
+                } catch (IOException | IllegalStateException | NullPointerException e) {
+                    AlertBoxHelper.display("Error", "An error has occurred: Internal Error");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private boolean validate() {
+        boolean result = true;
+        if (insurance.getCoverages().size() == 0) {
+            insuranceErrorLabel.setVisible(true);
+            result = false;
+        }
+        if (insurance.get() instanceof Vehicle) {
+            if (((Vehicle) insurance.get()).getType() == null) {
+                vehicleTypeError.setVisible(true);
+                result = false;
+            }
+        }
+
+        return result;
     }
 
     private void initilalizeComboboxes() {
@@ -98,8 +151,10 @@ public class NewContractController implements Initializable {
                             generateCoverages(InsuranceCoverages.healthCoverages());
                             insurance = new HealthInsurance();
                             object = new ArrayList<User>();
-                            addHealthInsuranceMember(user);
+                            addMessage.setText("Προσθέστε μέλος ασφάλισης");
                             addMember.setVisible(true);
+                            setTableVisibility(true);
+                            confirmButton.setVisible(true);
                             break;
                         case VEHICLE:
                             AnimationHelper.fadeIn(vehicleTypeBox);
@@ -107,16 +162,21 @@ public class NewContractController implements Initializable {
                             insurance = new VehicleInsurance();
                             object = new Vehicle();
                             addMember.setVisible(false);
+                            setTableVisibility(false);
                             break;
                         case HOME:
                             AnimationHelper.fadeOut(vehicleTypeBox);
                             generateCoverages(InsuranceCoverages.homeCoverages());
                             insurance = new HomeInsurance();
                             object = new Home();
-                            addHomeInhabitant(user);
+                            addMessage.setText("Προσθέστε κάτοικο");
                             addMember.setVisible(true);
+                            setTableVisibility(true);
+                            confirmButton.setVisible(true);
                             break;
                     }
+                    addUserToList(user);
+                    insurance.set(object);
                 }));
 
 
@@ -136,21 +196,22 @@ public class NewContractController implements Initializable {
                             ((Vehicle) object).setType(FARM_MACHINERY);
                             break;
                     }
+                    confirmButton.setVisible(true);
                     ((Vehicle) object).setOwner(user);
                 }));
-
-        addMemberButton.setOnAction(event -> {
-            User u = new AddUserBoxHelper().addUser("προσθήκη");
-            System.out.print(u.getFirstName());
-        });
     }
 
-    private void addHealthInsuranceMember(User usr) {
-        ((ArrayList<User>) object).add(usr);
-    }
+    private void addUserToList(User usr) {
+        if (object instanceof ArrayList<?>) {
+            if (!((ArrayList<User>) object).contains(usr))
+                ((ArrayList<User>) object).add(usr);
+        } else if (object instanceof Home) {
+            if (!((ArrayList<User>) object).contains(usr))
+                ((Home) object).getInhabitants().add(usr);
+        }
 
-    private void addHomeInhabitant(User usr) {
-        ((Home) object).getInhabitants().add(usr);
+        if (!users.contains(usr))
+            users.addAll(usr);
     }
 
     private void generateCoverages(List<Coverage> coverages) {
@@ -173,11 +234,43 @@ public class NewContractController implements Initializable {
             mainLayout.getChildren().add(child);
         }
 
+        insuranceErrorLabel.setTextFill(Paint.valueOf("#FF0000"));
+        mainLayout.getChildren().add(insuranceErrorLabel);
         grid.add(mainLayout, 0, 2);
+
+        insuranceErrorLabel.setVisible(false);
 
         st.push(mainLayout);
     }
 
+    private void usersTable() {
+        table.setPlaceholder(new Label("Δεν υπάρχουν νέοι χρήστες"));
+        table.setEditable(true);
+
+        TableColumn firstNameCol = new TableColumn("Όνομα");
+        firstNameCol.setCellValueFactory(
+                new PropertyValueFactory<User, String>("firstName"));
+
+        TableColumn lastNameCol = new TableColumn("Επώνυμο");
+        lastNameCol.setCellValueFactory(
+                new PropertyValueFactory<User, String>("lastName"));
+
+        TableColumn ageCol = new TableColumn("Ηλικία");
+        ageCol.setCellValueFactory(
+                new PropertyValueFactory<User, Integer>("age"));
+
+        table.setItems(users);
+
+        table.getColumns().addAll(firstNameCol, lastNameCol, ageCol);
+
+        grid.add(table, 0, 4);
+
+        table.setVisible(false);
+    }
+
+    private void setTableVisibility(boolean visibility) {
+        table.setVisible(visibility);
+    }
 
     private EventHandler checkBoxAction = (EventHandler<ActionEvent>) event -> {
         if (event.getSource() instanceof CheckBox) {
@@ -209,5 +302,9 @@ public class NewContractController implements Initializable {
 
     public void getUser(User user) {
         this.user = user;
+    }
+
+    private void openConfirmPage() throws IOException {
+        GotoOtherPage.confirmPage(insurance, getClass(), (Stage) confirmButton.getScene().getWindow());
     }
 }

@@ -1,5 +1,6 @@
 package main_screen;
 
+import helpers.GotoOtherPage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,12 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("mainScreen.fxml"));
-        primaryStage.setTitle("Ασφαλιστική - Είσοδος");
-        Scene scene = new Scene(root, 600, 375);
-        scene.getStylesheets().add("resources/stylesheets/main.css");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        GotoOtherPage.main(getClass(), primaryStage);
     }
 
     public static void main(String[] args) {

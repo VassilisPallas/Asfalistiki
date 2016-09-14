@@ -1,50 +1,53 @@
 package model;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class User {
-    private String firstName;
-    private String lastName;
-    private String fullName;
-    private int age;
+    private SimpleStringProperty firstName = new SimpleStringProperty();
+    private SimpleStringProperty lastName = new SimpleStringProperty();
+    private SimpleStringProperty fullName = new SimpleStringProperty();
+    private SimpleIntegerProperty age = new SimpleIntegerProperty();
 
     public User() {
     }
 
     public User(String firstName, String lastName, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = firstName + " " + lastName;
-        this.age = age;
+        this.firstName.set(firstName);
+        this.lastName.set(lastName);
+        this.fullName.set(firstName + " " + lastName);
+        this.age.set(age);
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName.get();
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName.set(firstName);
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName.get();
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName.set(lastName);
     }
 
     public String getFullName() {
-        return fullName;
+        return fullName.get();
     }
 
     public void setFullName(String fullName) {
-        this.fullName = firstName + " " + lastName;
+        this.fullName.set(firstName + " " + lastName);
     }
 
     public int getAge() {
-        return age;
+        return age.get();
     }
 
     public void setAge(int age) {
-        this.age = age;
+        this.age.set(age);
     }
 }

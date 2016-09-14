@@ -1,6 +1,7 @@
 package main_screen;
 
 import helpers.AlertBoxHelper;
+import helpers.GotoOtherPage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -50,7 +51,7 @@ public class MainController implements Initializable {
             if (validate()) {
                 try {
                     openNewContractScreen(new User(firstName.getText().trim(), lastName.getText().trim(), Calendar.getInstance().get(Calendar.YEAR) - age.getValue().getYear()));
-                } catch (IOException | IllegalStateException e) {
+                } catch (IOException | IllegalStateException | NullPointerException e) {
                     AlertBoxHelper.display("Error", "An error has occurred: Internal Error");
                     e.printStackTrace();
                 }
@@ -85,15 +86,6 @@ public class MainController implements Initializable {
     }
 
     private void openNewContractScreen(User user) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/new_contract_screen/newContractScreen.fxml"));
-        Parent sceneMain = loader.load();
-        NewContractController controller = loader.getController();
-        controller.getUser(user);
-
-        Stage stage = (Stage) loginBtn.getScene().getWindow();
-        stage.setTitle("Δημιουργία νέου συμβολαίου");
-        Scene scene = new Scene(sceneMain, 600, 375);
-        scene.getStylesheets().add("resources/stylesheets/main.css");
-        stage.setScene(scene);
+        GotoOtherPage.newContract(user, getClass(), (Stage) loginBtn.getScene().getWindow());
     }
 }

@@ -5,17 +5,13 @@ import insurance.vehicle.VehicleType;
 public class Vehicle {
 
     private VehicleType type;
-    private String brand;
-    private String model;
     private User owner;
 
     public Vehicle() {
     }
 
-    public Vehicle(VehicleType type, String brand, String model, User owner) {
+    public Vehicle(VehicleType type, User owner) {
         this.type = type;
-        this.brand = brand;
-        this.model = model;
         this.owner = owner;
     }
 

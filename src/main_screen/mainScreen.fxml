@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane id="root" fx:id="root" minHeight="375.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_screen.MainController">
+<StackPane id="root" fx:id="root" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_screen.MainController">
 
     <GridPane id="pane" alignment="CENTER" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity"  vgap="10">
 

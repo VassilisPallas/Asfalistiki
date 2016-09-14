@@ -1,38 +1,43 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Home {
-    private String address;
-    private String addressNumber;
+    private SimpleStringProperty address = new SimpleStringProperty();
+    private SimpleStringProperty addressNumber = new SimpleStringProperty();
     private int floor;
     private double sqrm;
     private List<User> inhabitants;
 
     public Home() {
+        inhabitants = new ArrayList<>();
     }
 
     public Home(String address, String addressNumber, int floor, double sqrm) {
-        this.address = address;
-        this.addressNumber = addressNumber;
+        super();
+        this.address.set(address);
+        this.addressNumber.set(addressNumber);
         this.floor = floor;
         this.sqrm = sqrm;
     }
 
     public String getAddress() {
-        return address;
+        return address.get();
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address.set(address);
     }
 
     public String getAddressNumber() {
-        return addressNumber;
+        return addressNumber.get();
     }
 
     public void setAddressNumber(String addressNumber) {
-        this.addressNumber = addressNumber;
+        this.addressNumber.set(addressNumber);
     }
 
     public int getFloor() {
